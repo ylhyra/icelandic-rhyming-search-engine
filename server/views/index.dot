@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<title>{{=it.title||''}}</title>
+
+<meta charset="utf-8"/>
+<meta noindex><!-- TODO -->
+<base href="/"/>
+<!-- <link href="/~/0.1/s.css" rel="stylesheet" type="text/css"/> -->
+<link href="/public/styles/style.min.css" rel="stylesheet" type="text/css"/>
+<meta name="description" content="Íslensk rímorðaleitarvél"/>
+<meta name="google" content="notranslate" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="shortcut icon" href="/~/favicon.png">
+<body>
+<div id="content">
+  <h1><a href="/">Rímorðabók</a></h1>
+  <form method="get" action="/">
+    <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.suggest_string||''}}" spellcheck="false" autocomplete="off"/>
+  </form>
+
+  <main>
+    <div id="results">
+
+    </div>
+  </main>
+</div>
+
+{{?it.results && false}}
+  <details>
+  <summary>Output</summary>
+  <pre>
+    {{=JSON.stringify(it.results,null,2)}}
+  </pre>
+  </details>
+{{?}}
+
+<script src="/~/0.1/s.js"></script>
+
+{{? !it.suggestions}}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "http://{{=it.url}}/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "http://{{=it.url}}/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+{{?}}
+</body>
+</html>

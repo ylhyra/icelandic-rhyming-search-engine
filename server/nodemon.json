@@ -1,0 +1,7 @@
+{
+  "ignore": [],
+  "watch": [
+    "index.js",
+    "views/*.dot"
+  ]
+}

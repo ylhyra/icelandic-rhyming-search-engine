@@ -1,0 +1,40 @@
+{
+  "name": "rhyme",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "latest",
+    "compression": "latest",
+    "cookie-parser": "latest",
+    "debug": "latest",
+    "diacritics": "latest",
+    "express": "latest",
+    "express-dot": "latest",
+    "morgan": "latest",
+    "pretty-error": "latest",
+    "serve-favicon": "latest",
+    "underscore": "latest",
+    "express-ws": "latest",
+    "file-stream-rotator": "latest",
+    "js-sha1": "latest"
+  },
+  "devDependencies": {
+    "browser-sync": "latest",
+    "gulp": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-babel": "latest",
+    "gulp-concat": "latest",
+    "gulp-filter": "^4.0.0",
+    "gulp-notify": "latest",
+    "gulp-plumber": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-stylus": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "line-by-line": "latest",
+    "html": "^1.0.0",
+    "js-beautify": "^1.6.8",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  }
+}
