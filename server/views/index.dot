@@ -6,7 +6,7 @@
 <meta noindex><!-- TODO -->
 <base href="/"/>
 <!-- <link href="/~/0.1/s.css" rel="stylesheet" type="text/css"/> -->
-<link href="/public/styles/style.min.css" rel="stylesheet" type="text/css"/>
+<link href="/style.css" rel="stylesheet" type="text/css"/>
 <meta name="description" content="Íslensk rímorðaleitarvél"/>
 <meta name="google" content="notranslate" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,12 +19,14 @@
 <div id="content">
   <h1><a href="/">Rímorðabók</a></h1>
   <form method="get" action="/">
-    <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.suggest_string||''}}" spellcheck="false" autocomplete="off"/>
+    <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.string||''}}" spellcheck="false" autocomplete="off"/>
   </form>
 
   <main>
     <div id="results">
-
+      {{?it.results}}
+        {{#def.load('/views/results.dot')}}
+      {{?}}
     </div>
   </main>
 </div>
@@ -40,7 +42,7 @@
 
 <script src="/~/0.1/s.js"></script>
 
-{{? !it.suggestions}}
+{{? !it.results}}
   <script type="application/ld+json">
   {
     "@context": "http://schema.org",

@@ -6,10 +6,15 @@ USE rhyme;
 
 GRANT ALL PRIVILEGES ON *.* TO 'egill'@'%' IDENTIFIED BY 'egillegillegill';
 
+
+
+
+
 DROP TABLE IF EXISTS rhyme_words;
 CREATE TABLE rhyme_words (
   id INT(7) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(40),
+  lowercase_word VARCHAR(40),
   last_syllables VARCHAR(40),
   last_syllable VARCHAR(40),
   rhyme_ending_id INT(6) UNSIGNED,
@@ -17,6 +22,7 @@ CREATE TABLE rhyme_words (
   popularity INT(2) UNSIGNED
 );
 CREATE INDEX _id ON rhyme_words (id);
+CREATE INDEX _lowercase_word ON rhyme_words (lowercase_word);
 CREATE INDEX _last_syllables ON rhyme_words (last_syllables);
 CREATE INDEX _last_syllable ON rhyme_words (last_syllable);
 CREATE INDEX _rhyme_ending_id ON rhyme_words (rhyme_ending_id);

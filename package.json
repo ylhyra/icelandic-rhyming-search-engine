@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-core": "^6.26.0",
     "body-parser": "latest",
     "compression": "latest",
     "cookie-parser": "latest",
@@ -10,13 +11,14 @@
     "diacritics": "latest",
     "express": "latest",
     "express-dot": "latest",
-    "morgan": "latest",
-    "pretty-error": "latest",
-    "serve-favicon": "latest",
-    "underscore": "latest",
     "express-ws": "latest",
     "file-stream-rotator": "latest",
-    "js-sha1": "latest"
+    "js-sha1": "latest",
+    "morgan": "latest",
+    "mysql": "^2.15.0",
+    "pretty-error": "latest",
+    "serve-favicon": "latest",
+    "underscore": "latest"
   },
   "devDependencies": {
     "browser-sync": "latest",

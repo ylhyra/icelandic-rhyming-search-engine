@@ -1,0 +1,14 @@
+{{~it.results :syllables }}
+  <div>
+    <div>
+      {{=syllables.syllables}}
+    </div>
+    <div>
+      {{~syllables.rhymes :rhyme }}
+        {{~rhyme.words :word }}
+          <span class="s_{{=word.score}}">{{=word.word}}</span>,
+        {{~}}
+      {{~}}
+    </div>
+  </div>
+{{~}}

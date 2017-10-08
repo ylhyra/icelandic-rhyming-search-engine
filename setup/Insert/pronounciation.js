@@ -1,6 +1,3 @@
-/*
-node setup/insert.js
-*/
 var LineByLineReader = require('line-by-line')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -19,75 +16,82 @@ connection.query(`TRUNCATE TABLE rhyme_ending_sounds`)
 const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|y|ö)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
 
+const run = (callback) => {
+  var lr = new LineByLineReader('setup/Data/pronounciation.csv')
+  lr.on('error', function(err) {
+    console.log(err)
+  });
+  var count = 0
 
-var lr = new LineByLineReader('Data/pronounciation.csv')
-lr.on('error', function(err) {
-  console.log(err)
-});
-var count = 0
+  lr.on('line', function(line) {
+    lr.pause()
+    var split = line.split(';;')
+    var word = split[0]
+    var pronounciation = split[1].replace(/ /g, '')
+      .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
+      .replace(/ʰ/g, '') // Fráblástur óþarfur
 
-lr.on('line', function(line) {
-  lr.pause()
-  var split = line.split(';;')
-  var word = split[0]
-  var pronounciation = split[1].replace(/ /g, '')
-    .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
-    .replace(/ʰ/g, '') // Fráblástur óþarfur
+    if (/[^A-zÀ-ÿ]/.test(word)) { // Rusl-línur
+      lr.resume()
+    } else {
+      const syllables = pronounciation ?
+        pronounciation.match(ipa_sérhljóðar).length :
+        word.match(sérhljóðar).length
 
-  if (/[^A-zÀ-ÿ]/.test(word)) { // Rusl-línur
-    lr.resume()
-  } else {
-    const syllables = pronounciation ?
-      pronounciation.match(ipa_sérhljóðar).length :
-      word.match(sérhljóðar).length
+      const word_split = word.toLowerCase().split(sérhljóðar)
+      const last_syllables = word_split.slice(-4).join('')
+      const last_syllable = word_split.slice(-2).join('')
 
-    const word_split = word.toLowerCase().split(sérhljóðar)
-    const last_syllables = word_split.slice(-4).join('')
-    const last_syllable = word_split.slice(-2).join('')
+      const ipa_split = pronounciation.split(ipa_sérhljóðar)
+      const last_ipa_syllables = ipa_split.slice(-4).join('')
+      const last_ipa_syllable = ipa_split.slice(-2).join('')
 
-    const ipa_split = pronounciation.split(ipa_sérhljóðar)
-    const last_ipa_syllables = ipa_split.slice(-4).join('')
-    const last_ipa_syllable = ipa_split.slice(-2).join('')
+      count++
+      // if (count > 10) {
+      //   process.exit()
+      // }
 
-    count++
-    // if (count > 10) {
-    //   process.exit()
-    // }
-
-    get_rhyme_ending_id(last_syllables, last_ipa_syllables, (id, already_exists) => {
-      if (!already_exists) {
-        save_sounds(ipa_split, id, () => {
+      get_rhyme_ending_id(last_syllables, last_ipa_syllables, (id, already_exists) => {
+        if (!already_exists) {
+          save_sounds(ipa_split, id, () => {
+            save_word(
+              word,
+              last_syllables,
+              last_syllable,
+              id,
+              syllables,
+              () => {
+                if (count > 100000000) {
+                  process.exit()
+                } else {
+                  lr.resume()
+                }
+              })
+          })
+        } else {
           save_word(
             word,
             last_syllables,
             last_syllable,
             id,
-            syllables,
-            () => {
-              if (count > 10000) {
+            syllables, () => {
+              if (count > 10000000) {
                 process.exit()
               } else {
                 lr.resume()
               }
             })
-        })
-      } else {
-        save_word(
-          word,
-          last_syllables,
-          last_syllable,
-          id,
-          syllables, () => {
-            if (count > 10000) {
-              process.exit()
-            } else {
-              lr.resume()
-            }
-          })
-      }
-    })
-  }
-});
+        }
+      })
+    }
+  });
+  lr.on('end', function() {
+    connection.end();
+    callback()
+  });
+}
+
+module.exports = run
 
 const get_rhyme_ending_id = (last_syllables, last_ipa_syllables, callback) => {
   connection.query(
@@ -122,12 +126,14 @@ const save_word = (
   connection.query(
     `INSERT INTO rhyme_words SET
       word = ?,
+      lowercase_word = ?,
       last_syllables = ?,
       last_syllable = ?,
       rhyme_ending_id = ?,
       syllables = ?
     `, [
       word,
+      word.toLowerCase(),
       last_syllables,
       last_syllable,
       rhyme_ending_id,
@@ -167,11 +173,6 @@ const save_sounds = (ipa_split, id, callback) => {
   });
 }
 
-lr.on('end', function() {
-  connection.end();
-});
-
-
 const getSounds = (score, position, ends_in_a_consonant, sound) => {
   if (sound === '') {
     return []
@@ -184,7 +185,7 @@ const getSounds = (score, position, ends_in_a_consonant, sound) => {
   similar_sounds.forEach((item, index) => {
     let newSound = sound
     item.sounds.forEach(replSounds => {
-      if(replSounds == '') return
+      if (replSounds == '') return
       const re = new RegExp(replSounds, 'g')
       newSound = newSound.replace(re, singleLetterReplacements[index])
     })
@@ -240,7 +241,7 @@ const similar_sounds = [{
   sounds: ['œ', 'ʏ'], // mönnum, munnum
   similarity: 0.1
 }, {
-  sounds: ['sc', 'st',], // bústinn - rúskinn
+  sounds: ['sc', 'st', ], // bústinn - rúskinn
   similarity: 0.5
 }, {
   sounds: ['', '', '', '', ], //

@@ -1,0 +1,141 @@
+$sans-serif = /*-apple-system, BlinkMacSystemFont, Roboto, Segoe UI,*/ Helvetica Neue, Aktiv Grotesk Corp, sans-serif
+// $sans-serif = Helvetica Neue, Aktiv Grotesk Corp, sans-serif
+$serif = Centennial LT Std, Century Schoolbook, Georgia, Times, serif
+$red = #CF4A26
+$blue = #266BCF
+
+
+// TEMP
+.hidden
+  display none
+// body #content
+//   min-width 800px
+
+
+*
+  box-sizing border-box
+
+html
+  width 100%
+  background white
+
+body
+  min-width 800px
+  font-size 16px
+  line-height 1.3em
+  color #131313
+  // background #F6F5F3
+  // border 1px solid #F6F5F4
+  // margin 14px
+  margin 0
+  background #FCFCFC
+  padding 35px
+  padding-bottom 20px
+  // min-height calc(100vh - @margin*2)
+  min-height calc(100vh)
+  font-family $sans-serif
+  display flex
+  flex-direction column
+
+body > #content
+  min-width 800px
+  margin auto
+  flex 1
+
+h1, h2, h3, h4, h5, p, ul
+  margin 0
+  padding 0
+
+a
+  text-decoration none
+
+ul
+  // list-style-type none
+
+pre
+  font-family Fira Code, monospace
+  line-height 15px
+  font-size 11px
+  white-space pre-wrap
+  word-wrap break-word
+
+/* _______ _ _   _
+  |__   __(_) | | |
+     | |   _| |_| | ___
+     | |  | | __| |/ _ \
+     | |  | | |_| |  __/
+     |_|  |_|\__|_|\___|   */
+h1
+  font-weight bold
+  font-size 30px
+  line-height 1.1em
+  text-align center
+  color #000000
+  display block
+  margin-top 23px
+  margin-bottom 30px
+  font-family $serif
+  a
+    color $red
+
+
+/*   _____                     _        _
+    / ____|                   | |      | |
+   | (___   ___  __ _ _ __ ___| |__    | |__   _____  __
+    \___ \ / _ \/ _` | '__/ __| '_ \   | '_ \ / _ \ \/ /
+    ____) |  __/ (_| | | | (__| | | |  | |_) | (_) >  <
+   |_____/ \___|\__,_|_|  \___|_| |_|  |_.__/ \___/_/\_\    */
+input[type="search"]
+  font-size 18px
+  outline none
+  border 1px solid #C2C2C2
+  box-shadow inset 0px 0px 1px 0 #F2F2F2, inset 0px 1px 0px 0 #F6F6F6
+  -webkit-appearance none
+  $padding = 10px
+  padding $padding
+  border-radius 2px
+  width 100%
+  max-width 420px
+  display block
+  margin 30px auto 50px auto
+  &:focus
+    border 3px solid $blue
+    $padding = $padding - 2
+    padding $padding
+    border-radius 3px
+
+
+/*  _____            _        _
+   / ____|          | |      (_)
+  | |     ___  _ __ | |_ __ _ _ _ __   ___ _ __
+  | |    / _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
+  | |___| (_) | | | | || (_| | | | | |  __/ |
+   \_____\___/|_| |_|\__\__,_|_|_| |_|\___|_|   */
+main
+  display flex
+  max-width 650px
+  margin auto
+
+
+
+
+@media (max-width: 600px)
+  body
+    margin 0
+    padding 10px
+    min-height 100vh
+  nav a
+    line-height 15px
+
+h3
+  font-size 13px
+  text-transform uppercase
+  font-weight 600
+  margin-bottom 2px
+  color #2b2b2b
+
+.s_16
+  color $blue
+  font-weight 600
+.s_10
+  color #7c7c7c
