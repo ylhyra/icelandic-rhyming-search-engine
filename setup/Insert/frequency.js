@@ -52,4 +52,6 @@ const run = (callback) => {
 
 module.exports = run
 
-// run()
+run(()=>{
+  process.exit()
+})

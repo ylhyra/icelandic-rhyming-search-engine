@@ -114,7 +114,7 @@ const match = (input, callback) => {
                AND pos2 != 0
 
           ORDER BY total_matches DESC
-          LIMIT 100
+          LIMIT 20
         ) AS endings
 
         JOIN rhyme_words
@@ -124,7 +124,7 @@ const match = (input, callback) => {
         ORDER BY
           syllables ASC,
           score DESC
-        #LIMIT 6
+        LIMIT 6
     `, [input], function(error, results, fields) {
     if (error) throw error;
 

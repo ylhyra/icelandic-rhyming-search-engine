@@ -13,7 +13,7 @@ connection.query(`TRUNCATE TABLE rhyme_words`)
 connection.query(`TRUNCATE TABLE rhyme_endings`)
 connection.query(`TRUNCATE TABLE rhyme_ending_sounds`)
 
-const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|y|ö)/g
+const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
 
 const run = (callback) => {

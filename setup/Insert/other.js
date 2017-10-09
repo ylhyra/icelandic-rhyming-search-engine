@@ -15,7 +15,7 @@ connection.connect();
 // TODO
 // connection.query(`TRUNCATE TABLE rhyme_words`)
 
-const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö)/g
+const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
 
 const run = (callback) => {
@@ -83,4 +83,6 @@ const run = (callback) => {
 
 module.exports = run
 
-// run()
+run(()=>{
+  process.exit()
+})
