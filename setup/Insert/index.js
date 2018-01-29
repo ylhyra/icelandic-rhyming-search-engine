@@ -2,11 +2,11 @@
 node setup/Insert/index.js
 */
 
-var pronounciation = require('./pronounciation');
+var pronunciation = require('./pronunciation');
 var other = require('./other');
 var frequency = require('./frequency');
 
-pronounciation(()=>{
+pronunciation(()=>{
   other(()=>{
     frequency(()=>{
       process.exit()

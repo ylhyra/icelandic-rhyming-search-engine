@@ -1,5 +1,5 @@
 DROP DATABASE rhyme;
-CREATE DATABASE ylhyra
+CREATE DATABASE rhyme
   DEFAULT CHARACTER SET utf8mb4
   DEFAULT COLLATE utf8mb4_icelandic_ci;
 USE rhyme;
@@ -31,11 +31,11 @@ CREATE INDEX _syllables ON rhyme_words (syllables);
 DROP TABLE IF EXISTS rhyme_endings;
 CREATE TABLE rhyme_endings (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  ending_pronounciation VARCHAR(18),
+  ending_pronunciation VARCHAR(18),
   ending VARCHAR(15)
 );
 CREATE INDEX _id ON rhyme_endings (id);
-CREATE INDEX _ending_pronounciation ON rhyme_endings (ending_pronounciation);
+CREATE INDEX _ending_pronunciation ON rhyme_endings (ending_pronunciation);
 CREATE INDEX _ending ON rhyme_endings (ending);
 
 DROP TABLE IF EXISTS rhyme_ending_sounds;

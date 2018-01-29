@@ -33,6 +33,7 @@ http://islenska.org/rima/
   þyrstur - fastur
   sverta - hefta
   þunnt - aumt
+  vals - uppáhalds
 
   Ýmsar orðmyndir vantar:
   nörtum
@@ -54,7 +55,7 @@ const rhyme = (input, callback) => {
   const word = input.replace(/[^A-zÀ-ÿ]/g, '')
   match(input, results => {
     callback(results)
-    // find_rhymes(pronounciation, callback)
+    // find_rhymes(pronunciation, callback)
   })
 }
 
@@ -146,9 +147,9 @@ const match = (input, callback) => {
         syllables = aggregated[aggregated.length - 1]
       }
       let rhymes = syllables.rhymes[syllables.rhymes.length - 1]
-      if(!rhymes || rhymes.rhyme != item.ending_pronounciation) {
+      if(!rhymes || rhymes.rhyme != item.ending_pronunciation) {
         syllables.rhymes.push({
-          rhyme: item.ending_pronounciation,
+          rhyme: item.ending_pronunciation,
           words: []
         })
         rhymes = syllables.rhymes[syllables.rhymes.length - 1]

@@ -17,7 +17,7 @@ const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
 
 const run = (callback) => {
-  var lr = new LineByLineReader('setup/Data/pronounciation.csv')
+  var lr = new LineByLineReader('setup/Data/pronunciation.csv')
   lr.on('error', function(err) {
     console.log(err)
   });
@@ -27,22 +27,22 @@ const run = (callback) => {
     lr.pause()
     var split = line.split(';;')
     var word = split[0]
-    var pronounciation = split[1].replace(/ /g, '')
+    var pronunciation = split[1].replace(/ /g, '')
       .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
       .replace(/ʰ/g, '') // Fráblástur óþarfur
 
     if (/[^A-zÀ-ÿ]/.test(word)) { // Rusl-línur
       lr.resume()
     } else {
-      const syllables = pronounciation ?
-        pronounciation.match(ipa_sérhljóðar).length :
+      const syllables = pronunciation ?
+        pronunciation.match(ipa_sérhljóðar).length :
         word.match(sérhljóðar).length
 
       const word_split = word.toLowerCase().split(sérhljóðar)
       const last_syllables = word_split.slice(-4).join('')
       const last_syllable = word_split.slice(-2).join('')
 
-      const ipa_split = pronounciation.split(ipa_sérhljóðar)
+      const ipa_split = pronunciation.split(ipa_sérhljóðar)
       const last_ipa_syllables = ipa_split.slice(-4).join('')
       const last_ipa_syllable = ipa_split.slice(-2).join('')
 
@@ -97,7 +97,7 @@ const get_rhyme_ending_id = (last_syllables, last_ipa_syllables, callback) => {
   connection.query(
     `SELECT id FROM rhyme_endings WHERE
       ending = ? AND
-      ending_pronounciation = ? LIMIT 1`, [last_syllables, last_ipa_syllables],
+      ending_pronunciation = ? LIMIT 1`, [last_syllables, last_ipa_syllables],
     (error, results, fields) => {
       if (error) throw error
       if (results.length > 0) {
@@ -106,7 +106,7 @@ const get_rhyme_ending_id = (last_syllables, last_ipa_syllables, callback) => {
         connection.query(
           `INSERT INTO rhyme_endings SET
             ending = ?,
-            ending_pronounciation = ?;
+            ending_pronunciation = ?;
             SELECT LAST_INSERT_ID() as id;`, [last_syllables, last_ipa_syllables],
           function(error, results, fields) {
             if (error) throw error;
