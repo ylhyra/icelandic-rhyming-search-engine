@@ -5,7 +5,7 @@ var LineByLineReader = require('line-by-line')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'ylhyra',
+  database: 'rhyme',
   user: 'egill',
   password: 'egillegillegill',
   multipleStatements: true,

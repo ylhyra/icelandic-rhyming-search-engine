@@ -1,5 +1,5 @@
 /*
-node data/Rím/rím.js
+node server/rhyme.js
 
 Keppinautar:
 http://heimskringla.net/
@@ -43,7 +43,7 @@ http://islenska.org/rima/
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'ylhyra',
+  database: 'rhyme',
   user: 'egill',
   password: 'egillegillegill',
   multipleStatements: true,
@@ -171,9 +171,9 @@ const match = (input, callback) => {
   });
 }
 
-// ríma('aðfsrðinni', output => {
-//   console.log(output)
-//   process.exit()
-// })
+rhyme('aðfsrðinni', output => {
+  console.log(output)
+  process.exit()
+})
 
 module.exports = rhyme

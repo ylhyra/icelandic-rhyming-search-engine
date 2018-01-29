@@ -9,7 +9,6 @@ GRANT ALL PRIVILEGES ON *.* TO 'egill'@'%' IDENTIFIED BY 'egillegillegill';
 
 
 
-
 DROP TABLE IF EXISTS rhyme_words;
 CREATE TABLE rhyme_words (
   id INT(7) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

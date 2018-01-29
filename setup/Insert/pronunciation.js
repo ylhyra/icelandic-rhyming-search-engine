@@ -2,7 +2,7 @@ var LineByLineReader = require('line-by-line')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'ylhyra',
+  database: 'rhyme',
   user: 'egill',
   password: 'egillegillegill',
   multipleStatements: true,
@@ -17,6 +17,7 @@ const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
 
 const run = (callback) => {
+
   var lr = new LineByLineReader('setup/Data/pronunciation.csv')
   lr.on('error', function(err) {
     console.log(err)
