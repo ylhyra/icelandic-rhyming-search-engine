@@ -161,8 +161,8 @@ const match = (input, callback) => {
     })
 
 
-    console.log(JSON.stringify(results,null,2).replace(/"/g,''))
-    console.log(JSON.stringify(aggregated,null,2).replace(/"/g,''))
+    // console.log(JSON.stringify(results,null,2).replace(/"/g,''))
+    // console.log(JSON.stringify(aggregated,null,2).replace(/"/g,''))
 
 
     callback(aggregated)
@@ -171,9 +171,9 @@ const match = (input, callback) => {
   });
 }
 
-rhyme('aðfsrðinni', output => {
-  console.log(output)
-  process.exit()
-})
+// rhyme('aðalfundi', output => {
+//   console.log(output)
+//   process.exit()
+// })
 
 module.exports = rhyme

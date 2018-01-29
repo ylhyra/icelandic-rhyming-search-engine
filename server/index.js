@@ -47,7 +47,7 @@ app.get(['/', '/:string'], function(req, res) {
           layout: false,
           results: results,
           string: string,
-          title: string + ' · Rímorðabók',
+          title: string + ' • Rímorðabók',
         })
       }
     })

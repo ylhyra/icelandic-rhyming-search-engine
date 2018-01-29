@@ -8,10 +8,17 @@ var connection = mysql.createConnection({
   multipleStatements: true,
 });
 
-connection.connect();
-connection.query(`TRUNCATE TABLE rhyme_words`)
-connection.query(`TRUNCATE TABLE rhyme_endings`)
-connection.query(`TRUNCATE TABLE rhyme_ending_sounds`)
+// connection.connect();
+// connection.query(`TRUNCATE TABLE rhyme_words`)
+// connection.query(`TRUNCATE TABLE rhyme_endings`)
+// connection.query(`TRUNCATE TABLE rhyme_ending_sounds`)
+
+
+
+// TRUNCATE TABLE rhyme_words;
+// TRUNCATE TABLE rhyme_endings;
+// TRUNCATE TABLE rhyme_ending_sounds;
+
 
 const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 const ipa_sérhljóðar = /(ai:?|au:?|ei:?|ou:?|œi:?|i:?|u:?|a:?|u:?|e:?|o:?|œ:?|ɪ:?|ɔ:?|ʏ:?|ɛ:?)/g
@@ -28,6 +35,11 @@ const run = (callback) => {
     lr.pause()
     var split = line.split(';;')
     var word = split[0]
+
+    if (count % 100 === 0) {
+      console.log(word)
+    }
+
     var pronunciation = split[1].replace(/ /g, '')
       .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
       .replace(/ʰ/g, '') // Fráblástur óþarfur
@@ -35,6 +47,17 @@ const run = (callback) => {
     if (/[^A-zÀ-ÿ]/.test(word)) { // Rusl-línur
       lr.resume()
     } else {
+
+
+      // if(word == 'kona') {
+      //   console.log(line)
+      //   console.log(word)
+      //   console.log(/[^A-zÀ-ÿ]/.test(word))
+      // } else {
+      //   lr.resume()
+      //
+      // }
+
       const syllables = pronunciation ?
         pronunciation.match(ipa_sérhljóðar).length :
         word.match(sérhljóðar).length
@@ -62,11 +85,12 @@ const run = (callback) => {
               id,
               syllables,
               () => {
-                if (count > 100000000) {
-                  process.exit()
-                } else {
-                  lr.resume()
-                }
+                lr.resume()
+                // if (count > 10000000) {
+                //   process.exit()
+                // } else {
+                //   lr.resume()
+                // }
               })
           })
         } else {
@@ -76,11 +100,12 @@ const run = (callback) => {
             last_syllable,
             id,
             syllables, () => {
-              if (count > 10000000) {
-                process.exit()
-              } else {
-                lr.resume()
-              }
+              lr.resume()
+              // if (count > 10000000) {
+              //   process.exit()
+              // } else {
+              //   lr.resume()
+              // }
             })
         }
       })
