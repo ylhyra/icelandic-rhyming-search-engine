@@ -144,6 +144,10 @@ const rhyme = (input, callback) => {
         }
         const color = (item.popularity ? (minMax(item.popularity, 1, 50) + 7) / 50 * 40 : 1) /* 0: Black, 40: Blue */
         let font_weight = 400
+        // Óvinsæl BÍN orð
+        if (item.popularity === null && item.id > 60700) {
+          opacity = minMax(opacity, 0.4, 0.5)
+        }
         if (opacity > .75 && color > 15) {
           font_weight = 500
         }
@@ -168,13 +172,12 @@ const rhyme = (input, callback) => {
           })
           syllables = aggregated[aggregated.length - 1]
         }
-
         let rhyme_index = syllables.rhymes.findIndex(element =>
           element.rhyme === item.ending_pronunciation
         )
         if (rhyme_index === -1) {
           syllables.rhymes.push({
-            rhyme: item.ending_pronunciation,
+            rhyme: item.ending_pronunciation, 
             words: []
           })
           rhyme_index = syllables.rhymes.length - 1

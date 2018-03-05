@@ -1,6 +1,6 @@
 SELECT
   words_2.*,
-  endings.*,
+  endings.ending_pronunciation,
   LEAST(endings.pos1, 100)
     + LEAST(endings.pos2, 100) * 0.6
     + LEAST(endings.pos3, 100) * 0.3
@@ -62,6 +62,6 @@ ORDER BY
   syllables ASC,
   score DESC,
   popularity DESC,
-  word ASC
+  lowercase_word ASC
 
-LIMIT 2000
+LIMIT 1000

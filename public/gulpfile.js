@@ -56,8 +56,8 @@ gulp.task('server', function () {
     .pipe(autoprefixer({
       browsers: ['last 10 versions', 'safari 5', 'ie 6', 'ie 7', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4']
     }))
-    .pipe(sourcemaps.write('./styles'))
-    .pipe(concat('style.min.css'))
+    // .pipe(sourcemaps.write('./styles'))
+    // .pipe(concat('style.min.css'))
     .pipe(gulp.dest('./styles'))
     // .pipe(filter(['*.css', '*/*/*.css', '*/*.css']))
     .pipe(browserSync.stream())

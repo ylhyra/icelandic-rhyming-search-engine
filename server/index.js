@@ -23,18 +23,22 @@ doT.setGlobals({
 //   })
 // app.use(morgan('combined', {
 //   stream: accessLogStream
-// }))
+// })) 
 app.enable('strict routing')
 app.use(compression({}))
 app.engine('dot', doT.__express)
 app.set('views', './views')
 app.set('view engine', 'dot')
 app.use('/robots.txt', express.static('./../public/robots.txt'))
-app.use('/~/dictionary.css', express.static('./../public/styles/dictionary.min.css'))
-app.use('/~/:version/s.css', express.static('./../public/styles/style.min.css'))
-app.use('/~/:version/s.js', express.static('./../public/scripts/script.js'))
 app.use('/~', express.static('./../public'))
-app.use('/style.css', express.static('./../public/styles/style.min.css'))
+app.use('/style.css', express.static('./../public/styles/style.css'))
+
+app.get('/um', function(req, res) {
+  res.render('about', {
+    layout: false, 
+    about: true,
+  })
+})
 
 app.get(['/', '/:string'], function(req, res) {
   let string = req.query['q'] || req.params.string

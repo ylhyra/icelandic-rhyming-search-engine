@@ -3,11 +3,10 @@
 <title>{{=it.title||''}}</title>
 
 <meta charset="utf-8"/>
-{{? !it.results}}
+{{? it.results}}
 <meta noindex><!-- TODO -->
 {{?}}
 <base href="/"/>
-<!-- <link href="/~/0.1/s.css" rel="stylesheet" type="text/css"/> -->
 <link href="/style.css" rel="stylesheet" type="text/css"/>
 <meta name="description" content="Íslensk rímorðaleitarvél"/>
 <meta name="google" content="notranslate" />
@@ -19,6 +18,7 @@
 <link rel="shortcut icon" href="/~/favicon.png">
 <body>
 <div id="content">
+  <a href="/um">Um</a>
   <h1><a href="/">Rímorðabók</a></h1>
   <form method="get" action="/">
     <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.string||''}}" spellcheck="false" autocomplete="off"/>
@@ -32,20 +32,12 @@
       {{?it.results}}
         {{#def.load('/views/results.dot')}}
       {{?}}
+      {{?it.about}}
+        {{#def.load('/views/about.dot')}}
+      {{?}}
     </div>
   </main>
 </div>
-
-{{?it.results && false}}
-  <details>
-  <summary>Output</summary>
-  <pre>
-    {{=JSON.stringify(it.results,null,2)}}
-  </pre>
-  </details>
-{{?}}
-
-<script src="/~/0.1/s.js"></script>
 
 {{? !it.results}}
   <script type="application/ld+json">
@@ -61,5 +53,6 @@
   }
   </script>
 {{?}}
+
 </body>
 </html>

@@ -16,7 +16,8 @@ CREATE TABLE rhyme_words (
   last_syllable VARCHAR(40),
   rhyme_ending_id INT(6) UNSIGNED,
   syllables INT(2) UNSIGNED,
-  popularity INT(2) UNSIGNED
+  popularity INT(2) UNSIGNED,
+  important BOOLEAN,
 );
 CREATE INDEX _id ON rhyme_words (id);
 CREATE INDEX _lowercase_word ON rhyme_words (lowercase_word);
@@ -24,6 +25,7 @@ CREATE INDEX _last_syllables ON rhyme_words (last_syllables);
 CREATE INDEX _last_syllable ON rhyme_words (last_syllable);
 CREATE INDEX _rhyme_ending_id ON rhyme_words (rhyme_ending_id);
 CREATE INDEX _syllables ON rhyme_words (syllables);
+CREATE INDEX _popularity ON rhyme_words (popularity);
 
 DROP TABLE IF EXISTS rhyme_endings;
 CREATE TABLE rhyme_endings (
@@ -48,4 +50,5 @@ CREATE INDEX _id ON rhyme_ending_sounds (id);
 CREATE INDEX _position ON rhyme_ending_sounds (position);
 CREATE INDEX _sound ON rhyme_ending_sounds (sound);
 CREATE INDEX _score ON rhyme_ending_sounds (score);
+CREATE INDEX _ends_in_a_consonant ON rhyme_ending_sounds (ends_in_a_consonant);
 CREATE INDEX _rhyme_ending_id ON rhyme_ending_sounds (rhyme_ending_id);
