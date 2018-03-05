@@ -27,11 +27,11 @@ doT.setGlobals({
 app.enable('strict routing')
 app.use(compression({}))
 app.engine('dot', doT.__express)
-app.set('views', './views')
+app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'dot')
-app.use('/robots.txt', express.static('./../public/robots.txt'))
-app.use('/~', express.static('./../public'))
-app.use('/style.css', express.static('./../public/styles/style.css'))
+app.use('/robots.txt', express.static(path.join(__dirname, './../public/robots.txt')))
+app.use('/~', express.static(path.join(__dirname, './../public')))
+app.use('/style.css', express.static(path.join(__dirname, './../public/styles/style.css')))
 
 app.get('/um', function(req, res) {
   res.render('about', {

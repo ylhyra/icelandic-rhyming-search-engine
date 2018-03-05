@@ -48,15 +48,16 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   database: 'rhyme2',
-  user: 'egill',
-  password: 'egillegillegill',
+  user: 'ylhyra_dev',
+  password: 'ylhyra_dev',
   multipleStatements: true,
 });
 connection.connect();
 connection.query(`SET sql_mode = ''`)
 const fs = require('fs')
-const rhyme_on_word = fs.readFileSync('./sql/rhyme_on_word.sql', 'utf8')
-const rhyme_on_ending = fs.readFileSync('./sql/rhyme_on_ending.sql', 'utf8')
+const path = require('path')
+const rhyme_on_word   = fs.readFileSync(path.join(__dirname, './sql/rhyme_on_word.sql'), 'utf8')
+const rhyme_on_ending = fs.readFileSync(path.join(__dirname, './sql/rhyme_on_ending.sql'), 'utf8')
 const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 
 const rhyme = (input, callback) => {
