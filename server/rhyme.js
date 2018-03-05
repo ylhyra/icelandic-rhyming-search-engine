@@ -34,9 +34,10 @@ http://islenska.org/rima/
   sverta - hefta
   þunnt - aumt
   vals - uppáhalds
+  seytla - betla
 
   Ýmsar orðmyndir vantar:
-  nörtum
+  nörtum (er þetta ekki komið í skjalið?)
 
 */
 
@@ -125,7 +126,7 @@ const match = (input, callback) => {
         ORDER BY
           syllables ASC,
           score DESC
-        LIMIT 6
+        LIMIT 1
     `, [input], function(error, results, fields) {
     if (error) throw error;
 

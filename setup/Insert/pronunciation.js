@@ -57,7 +57,10 @@ const run = (callback) => {
       //   lr.resume()
       //
       // }
-
+      if(pronunciation && !pronunciation.match(ipa_sérhljóðar)) {
+        lr.resume()
+        return
+      }
       const syllables = pronunciation ?
         pronunciation.match(ipa_sérhljóðar).length :
         word.match(sérhljóðar).length

@@ -1,12 +1,10 @@
-DROP DATABASE rhyme;
+DROP DATABASE IF EXISTS rhyme;
 CREATE DATABASE rhyme
   DEFAULT CHARACTER SET utf8mb4
   DEFAULT COLLATE utf8mb4_icelandic_ci;
 USE rhyme;
 
-GRANT ALL PRIVILEGES ON *.* TO 'egill'@'%' IDENTIFIED BY 'egillegillegill';
-
-
+GRANT ALL ON `rhyme`.* TO 'ylhyra_dev'@'localhost' IDENTIFIED BY 'ylhyra_dev';
 
 
 DROP TABLE IF EXISTS rhyme_words;
