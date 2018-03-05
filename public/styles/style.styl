@@ -17,30 +17,24 @@ $blue = #266BCF
 
 html
   width 100%
-  background white
+  background #FCFCFC
 
 body
-  min-width 800px
   font-size 16px
   line-height 1.3em
   color #131313
-  // background #F6F5F3
-  // border 1px solid #F6F5F4
-  // margin 14px
   margin 0
-  background #FCFCFC
   padding 35px
   padding-bottom 20px
-  // min-height calc(100vh - @margin*2)
   min-height calc(100vh)
   font-family $sans-serif
   display flex
   flex-direction column
 
 body > #content
-  min-width 800px
   margin auto
   flex 1
+  width 100%
 
 h1, h2, h3, h4, h5, p, ul
   margin 0
@@ -134,8 +128,28 @@ h3
   margin-bottom 2px
   color #2b2b2b
 
-.s_16
-  color $blue
-  font-weight 600
-.s_10
-  color #7c7c7c
+.syllables
+  position relative
+  margin-bottom 20px
+.syllable
+  font-weight bold
+  position absolute
+  left 0px
+.rhymes
+  // border-left 1px solid #dbdadc
+  padding-left 36px
+.rhyme
+  position relative
+  margin-bottom 4px
+  &:before
+    content '•'
+    content '●'
+    color #c9c9c9
+    position absolute
+    left -18px
+
+
+
+.punc
+  color #a5a4a6
+  font-weight 400

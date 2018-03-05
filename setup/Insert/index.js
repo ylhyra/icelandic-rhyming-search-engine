@@ -8,7 +8,7 @@ var frequency = require('./frequency');
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'rhyme',
+  database: 'rhyme2',
   user: 'ylhyra_dev',
   password: 'ylhyra_dev',
   multipleStatements: true,
@@ -22,10 +22,10 @@ connection.query(`
   (err) => {
     pronunciation(() => {
       // process.exit()
-      other(() => {
+      // other(() => {
         frequency(() => {
           process.exit()
         })
-      })
+      // })
     })
   })

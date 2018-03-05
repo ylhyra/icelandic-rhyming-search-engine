@@ -5,9 +5,9 @@ var LineByLineReader = require('line-by-line')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'rhyme',
-  user: 'egill',
-  password: 'egillegillegill',
+  database: 'rhyme2',
+  user: 'ylhyra_dev',
+  password: 'ylhyra_dev',
   multipleStatements: true,
 });
 
@@ -51,7 +51,7 @@ const run = (callback) => {
 }
 
 module.exports = run
-// 
+//
 // run(()=>{
 //   process.exit()
 // })

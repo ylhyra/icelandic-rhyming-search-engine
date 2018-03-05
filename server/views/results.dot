@@ -5,15 +5,10 @@
     </div>
     <div class="rhymes">
       {{~syllables.rhymes :rhyme }}
-        <div>
-          <div>
-            <!-- {{=rhyme.rhyme}} -->
-          </div>
-          <div class="">
-            {{~rhyme.words :word:index }}
-              <span class="s_{{=word.score}}">{{=word.word}}</span>{{? index == rhyme.words.length }},{{?}}
-            {{~}}
-          </div>
+        <div class="rhyme">
+          {{~rhyme.words :word:index }}
+            <span style="{{=word.style}}">{{=word.word}}</span>{{? index < rhyme.words.length - 1 }}<span class="punc">,</span>{{?}}
+          {{~}}
         </div>
       {{~}}
     </div>

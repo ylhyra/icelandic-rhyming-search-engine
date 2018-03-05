@@ -3,7 +3,9 @@
 <title>{{=it.title||''}}</title>
 
 <meta charset="utf-8"/>
+{{? !it.results}}
 <meta noindex><!-- TODO -->
+{{?}}
 <base href="/"/>
 <!-- <link href="/~/0.1/s.css" rel="stylesheet" type="text/css"/> -->
 <link href="/style.css" rel="stylesheet" type="text/css"/>
@@ -24,6 +26,9 @@
 
   <main>
     <div id="results">
+      {{?it.no_results}}
+        Ekkert rím fannst fyrir „<b>{{=it.string}}</b>“.
+      {{?}}
       {{?it.results}}
         {{#def.load('/views/results.dot')}}
       {{?}}

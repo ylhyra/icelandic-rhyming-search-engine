@@ -2,9 +2,9 @@ var LineByLineReader = require('line-by-line')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
-  database: 'rhyme',
-  user: 'egill',
-  password: 'egillegillegill',
+  database: 'rhyme2',
+  user: 'ylhyra_dev',
+  password: 'ylhyra_dev',
   multipleStatements: true,
 });
 
@@ -41,7 +41,8 @@ const run = (callback) => {
     }
 
     var pronunciation = split[1].replace(/ /g, '')
-      .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
+      // .replace(/(m̥|n̥|ɲ̊|ɲ|ŋ̊|ŋ̥|ŋ)/g, 'N') // Nefhljóð
+      // .replac(/(ŋ̥|n̥)/g,'N') // Mjög svipuð nefhljóð
       .replace(/ʰ/g, '') // Fráblástur óþarfur
 
     if (/[^A-zÀ-ÿ]/.test(word)) { // Rusl-línur
@@ -57,7 +58,7 @@ const run = (callback) => {
       //   lr.resume()
       //
       // }
-      if(pronunciation && !pronunciation.match(ipa_sérhljóðar)) {
+      if (pronunciation && !pronunciation.match(ipa_sérhljóðar)) {
         lr.resume()
         return
       }
@@ -246,7 +247,13 @@ const similar_sounds = [{
   sounds: ['p', 't', 'c', 'k'], // Lokhljóð
   similarity: 0.5
 }, {
-  sounds: ['m', 'n', 'N'], // Nefhljóð
+  sounds: ['m', 'n', 'm̥', 'n̥', 'ɲ̊', 'ɲ', 'ŋ̊', 'ŋ̥', 'ŋ'], // Nefhljóð
+  similarity: 0.6
+}, {
+  sounds: ['m̥', 'n̥', 'ɲ̊', 'ŋ̊', 'ŋ̥'], // Hörð nefhljóð
+  similarity: 0.8
+}, {
+  sounds: ['m', 'n', 'ɲ', 'ŋ'], // Mjúk nefhljóð
   similarity: 0.8
 }, {
   sounds: ['œi', 'œ', 'ʏ'], // au, ö, u

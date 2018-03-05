@@ -39,137 +39,161 @@ http://islenska.org/rima/
   Ýmsar orðmyndir vantar:
   nörtum (er þetta ekki komið í skjalið?)
 
+  Næst á dagskrá: Áhersla!!
+  kjúklingabringur vs. níðingur
+
 */
 
-var mysql = require('mysql');
-var connection = mysql.createConnection({
+const mysql = require('mysql');
+const connection = mysql.createConnection({
   host: 'localhost',
-  database: 'rhyme',
+  database: 'rhyme2',
   user: 'egill',
   password: 'egillegillegill',
   multipleStatements: true,
 });
 connection.connect();
 connection.query(`SET sql_mode = ''`)
+const fs = require('fs')
+const rhyme_on_word = fs.readFileSync('./sql/rhyme_on_word.sql', 'utf8')
+const rhyme_on_ending = fs.readFileSync('./sql/rhyme_on_ending.sql', 'utf8')
+const sérhljóðar = /(ei|au|a|e|i|o|u|y|á|é|í|ó|ú|ý|ö|æ)/g
 
 const rhyme = (input, callback) => {
-  const word = input.replace(/[^A-zÀ-ÿ]/g, '')
-  match(input, results => {
-    callback(results)
-    // find_rhymes(pronunciation, callback)
-  })
-}
+  const word = input.replace(/[^A-zÀ-ÿ]/g, '').toLowerCase()
+  const word_split = word.split(sérhljóðar)
+  const last_syllables = word_split.slice(-4).join('')
+  const last_syllable = word_split.slice(-2).join('')
 
-const match = (input, callback) => {
-  connection.query(
-    `
-      SELECT
-        words_2.*,
-        endings.*,
-        LEAST(endings.pos1, 100)
-          + LEAST(endings.pos2, 100) * 0.6
-          + LEAST(endings.pos3, 100) * 0.3
-          + LEAST(endings.pos4, 100) * 0.1
-          AS score
-      FROM
-        # Finds all rhyme endings
-        (
-          SELECT
-            endings_2.*,
-            COUNT(sounds_2.id) as total_matches,
-            SUM(CASE WHEN sounds_2.position = 1 then sounds_2.score else 0 end) pos1,
-            SUM(CASE WHEN sounds_2.position = 2 then sounds_2.score else 0 end) pos2,
-            SUM(CASE WHEN sounds_2.position = 3 then sounds_2.score else 0 end) pos3,
-            SUM(CASE WHEN sounds_2.position = 4 then sounds_2.score else 0 end) pos4
+  /*
+    Does this word exists or do we need to only check the word ending?
+  */
+  connection.query(`
+    SELECT * FROM rhyme_words WHERE lowercase_word = ? LIMIT 1;
+    SELECT * FROM rhyme_endings WHERE ending = ? LIMIT 1;
+    SELECT * FROM rhyme_endings WHERE ending = ? LIMIT 1;
+  `, [
+    word,
+    last_syllables,
+    last_syllable,
+  ], function(error, results) {
+    let sql, parameter
+    if (error) {
+      console.error(error)
+      callback(null)
+      return
+    }
 
-          # Find word
-          FROM rhyme_words
-            AS words_1
-
-          # Find the prounounciation of its ending
-          JOIN rhyme_endings
-            AS endings_1
-            ON endings_1.id = words_1.rhyme_ending_id
-
-          # Find the sounds
-          JOIN rhyme_ending_sounds
-            AS sounds_1
-            ON endings_1.id = sounds_1.rhyme_ending_id
-
-          # Find sounds in common
-          JOIN rhyme_ending_sounds
-            AS sounds_2
-            ON sounds_1.ends_in_a_consonant = sounds_2.ends_in_a_consonant
-           AND sounds_1.position = sounds_2.position
-           AND sounds_1.sound = sounds_2.sound
-
-          # Find endings with those sounds
-          JOIN rhyme_endings
-            AS endings_2
-            ON endings_2.id = sounds_2.rhyme_ending_id
-
-          WHERE words_1.word = ?
-
-          GROUP BY sounds_2.rhyme_ending_id
-            # Last two wounds must have a match
-            HAVING pos1 != 0
-               AND pos2 != 0
-
-          ORDER BY total_matches DESC
-          LIMIT 20
-        ) AS endings
-
-        JOIN rhyme_words
-          AS words_2
-          ON words_2.rhyme_ending_id = endings.id
-
-        ORDER BY
-          syllables ASC,
-          score DESC
-        LIMIT 1
-    `, [input], function(error, results, fields) {
-    if (error) throw error;
+    // Word exists
+    if (results[0].length > 0) {
+      console.log('~~ word')
+      sql = rhyme_on_word
+      parameter = word
+    }
+    // Syllables exist
+    else if (results[1].length > 0) {
+      console.log('~~ syllables')
+      sql = rhyme_on_ending
+      parameter = last_syllables
+    }
+    // Syllable exist
+    else if (results[2].length > 0) {
+      console.log('~~ syllable')
+      sql = rhyme_on_ending
+      parameter = last_syllable
+    } else {
+      callback(null)
+      return
+    }
 
     /*
-      output
-        syllables
-          rhymes
-            words
-              word
+      Find rhyme
     */
-    let aggregated = []
-    results.forEach((item, index) => {
-      let syllables = aggregated[aggregated.length - 1]
-      if(index == 0 || syllables.syllables != item.syllables) {
-        aggregated.push({
-          syllables: item.syllables,
-          rhymes: []
-        })
-        syllables = aggregated[aggregated.length - 1]
+    console.time('Tók');
+    connection.query(sql, [parameter], function(error, results, fields) {
+      if (error) {
+        console.error(error)
+        callback(null)
+        return
       }
-      let rhymes = syllables.rhymes[syllables.rhymes.length - 1]
-      if(!rhymes || rhymes.rhyme != item.ending_pronunciation) {
-        syllables.rhymes.push({
-          rhyme: item.ending_pronunciation,
-          words: []
-        })
-        rhymes = syllables.rhymes[syllables.rhymes.length - 1]
+      console.timeEnd('Tók');
+
+      if (results.length == 0) {
+        console.log('~~ No results')
+        callback(null)
+        return
       }
-      rhymes.words.push({
-        word: item.word,
-        score: Math.floor(item.score / 10)
+
+      /*
+        output
+          syllables
+            rhymes
+              words
+                word
+      */
+      // console.log(JSON.stringify(results,null,2))
+
+      /*
+        Finna góða liti og stærðir, byggist á Score og Popularity
+      */
+      results = results.map(item => {
+        let opacity = (minMax(item.score, 100, 190) / 190) ** 1.6 + 0.1
+        opacity = minMax(opacity, 0.45, 1)
+        if (!item.popularity) {
+          opacity = minMax(opacity, 0.45, 0.7)
+        }
+        const color = (item.popularity ? (minMax(item.popularity, 1, 50) + 7) / 50 * 40 : 1) /* 0: Black, 40: Blue */
+        let font_weight = 400
+        if (opacity > .75 && color > 15) {
+          font_weight = 500
+        }
+        if (opacity > .95 && color > 30) {
+          font_weight = 600
+        }
+        return {
+          ...item,
+          style: `color:hsla(209, 100%, ${Math.round(color)}%, ${opacity.toFixed(2)});` +
+            `font-weight:${font_weight}`,
+        }
       })
+
+      let aggregated = []
+      results.forEach((item, index) => {
+        let syllables = aggregated[aggregated.length - 1]
+
+        if (index == 0 || syllables.syllables != item.syllables) {
+          aggregated.push({
+            syllables: item.syllables,
+            rhymes: []
+          })
+          syllables = aggregated[aggregated.length - 1]
+        }
+
+        let rhyme_index = syllables.rhymes.findIndex(element =>
+          element.rhyme === item.ending_pronunciation
+        )
+        if (rhyme_index === -1) {
+          syllables.rhymes.push({
+            rhyme: item.ending_pronunciation,
+            words: []
+          })
+          rhyme_index = syllables.rhymes.length - 1
+        }
+        syllables.rhymes[rhyme_index].words.push({
+          word: item.word,
+          style: item.style,
+          // score: Math.floor(item.score),
+          // popularity: item.popularity,
+        })
+      })
+
+      // console.log(JSON.stringify(results,null,2).replace(/"/g,''))
+      // console.log(JSON.stringify(aggregated,null,2).replace(/"/g,''))
+      callback(aggregated)
+      // process.exit()
     })
+  })
 
-
-    // console.log(JSON.stringify(results,null,2).replace(/"/g,''))
-    // console.log(JSON.stringify(aggregated,null,2).replace(/"/g,''))
-
-
-    callback(aggregated)
-    // process.exit()
-
-  });
 }
 
 // rhyme('aðalfundi', output => {
@@ -178,3 +202,8 @@ const match = (input, callback) => {
 // })
 
 module.exports = rhyme
+
+
+const minMax = (val, min, max) => {
+  return val > max ? max : val < min ? min : val
+}

@@ -37,11 +37,18 @@ app.use('/~', express.static('./../public'))
 app.use('/style.css', express.static('./../public/styles/style.min.css'))
 
 app.get(['/', '/:string'], function(req, res) {
-  if (req.params.string || req.query['q']) {
-    const string = (req.query['q'] || req.params.string).replace(/[^A-zÀ-ÿ ]/g, '')
-    rhyme(string, (results, error) => {
-      if(error) {
+  let string = req.query['q'] || req.params.string
+  if (string && string.trim().length > 0) {
+    string = (req.query['q'] || req.params.string).replace(/[^A-zÀ-ÿ ]/g, '').slice(-200)
+    rhyme(string.slice(-50), (results, error) => {
+      if (error) {
         res.send(error)
+      } else if (results === null) {
+        res.render('index', {
+          layout: false,
+          string: string,
+          no_results: true,
+        })
       } else {
         res.render('index', {
           layout: false,

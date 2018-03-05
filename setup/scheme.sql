@@ -1,15 +1,15 @@
-DROP DATABASE IF EXISTS rhyme;
-CREATE DATABASE rhyme
+DROP DATABASE IF EXISTS rhyme2;
+CREATE DATABASE rhyme2
   DEFAULT CHARACTER SET utf8mb4
   DEFAULT COLLATE utf8mb4_icelandic_ci;
-USE rhyme;
+USE rhyme2;
 
-GRANT ALL ON `rhyme`.* TO 'ylhyra_dev'@'localhost' IDENTIFIED BY 'ylhyra_dev';
+GRANT ALL ON `rhyme2`.* TO 'ylhyra_dev'@'localhost' IDENTIFIED BY 'ylhyra_dev';
 
 
 DROP TABLE IF EXISTS rhyme_words;
 CREATE TABLE rhyme_words (
-  id INT(7) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(40),
   lowercase_word VARCHAR(40),
   last_syllables VARCHAR(40),
@@ -27,7 +27,7 @@ CREATE INDEX _syllables ON rhyme_words (syllables);
 
 DROP TABLE IF EXISTS rhyme_endings;
 CREATE TABLE rhyme_endings (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   ending_pronunciation VARCHAR(18),
   ending VARCHAR(15)
 );
@@ -37,7 +37,7 @@ CREATE INDEX _ending ON rhyme_endings (ending);
 
 DROP TABLE IF EXISTS rhyme_ending_sounds;
 CREATE TABLE rhyme_ending_sounds (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   position INT(1) UNSIGNED,
   sound VARCHAR(15),
   score INT(2) UNSIGNED,
