@@ -1,26 +1,15 @@
-## TODO
+# Rímorðabók 🇮🇸
 
-- Log
-- Log referrer
-
+Þessi rímleitarvél reynir sitt besta að finna heilrím, hálfrím, og næstum-því-rím.
 
 
+## Skal gjört:
 
-scp -r rhyme.sql.bz2 root@ssh.egill.xyz:/home/egill/islenska/files/datasets/rhyme.sql.bz2
+- Við ættum að reyna betur að finna niðurstöður fyrir bull-orð. Einungis er reynt að finna rím út frá þegar þekktum endingum.
+- Eins atkvæðis orð eru mjög slöpp. 
+- Fylgjast með löngum framburði, því "Ha:raldur" og "Valtýr" ríma ekki.
 
-scp package.json root@ssh.egill.xyz:/home/egill/rhyme/package.json
-scp -r rhyme.sql.bz2 root@ssh.egill.xyz:/home/egill/rhyme/rhyme.sql.bz2
+## Byggir á:
 
-# Install Package.json
-scp package.json root@ssh.egill.xyz:/home/egill/rhyme/package.json
-
-ssh root@ssh.egill.xyz rm -r /home/egill/rhyme/server/*
-scp -r server/* root@ssh.egill.xyz:/home/egill/rhyme/server
-ssh -t root@ssh.egill.xyz "cd /home/egill/rhyme/server/ && npm i"
-ssh root@ssh.egill.xyz pm2 restart rhyme
-
-
-
-scp -r public root@ssh.egill.xyz:/home/egill/rhyme/public 
-
-pm2 start /home/egill/rhyme/server/index.js --name rhyme
+- Framburðarorðabók Hjal-verkefnisins, ásamt ýmsum leiðréttingum.
+- Orðmyndalista úr Beygingarlýsingu íslensk nútímamáls eftir Stofnun Árna Magnússonar í íslenskum fræðum.

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>{{=it.title||''}}</title>
+<title>{{=it.title||'Rímorðabók'}}</title>
 
 <meta charset="utf-8"/>
 {{? it.results}}
@@ -20,7 +20,7 @@
 {{? it.results}}
   <script type="text/javascript">
     if(/[?&]q=/.test(location.search)) {
-      var match = location.search.match(/[?&]q=([A-zÀ-ÿ%0-9]+)/);
+      var match = location.search.match(/[?&]q=([A-zÀ-ÿ%0-9+]+)/);
       if (match && window.history.replaceState) {
          window.history.replaceState(null, null, '/'+match[1]);
         
@@ -80,7 +80,7 @@
             Byggir á:
             <ul>
               <li><a href="http://malfong.is/?pg=framburdur">Framburðarorðabók</a> Hjal-verkefnisins, ásamt ýmsum leiðréttingum.</li>
-              <li><a href="http://bin.arnastofnun.is/gogn/">Orðmyndalista</a> úr Beygingarlýsingu íslensk nútímamáls eftir Stofnun Árna Magnússonar í íslenskum fræðum. Ritstjóri BÍN er Kristín Bjarnadóttir.</li>
+              <li><a href="http://bin.arnastofnun.is/gogn/">Orðmyndalista</a> úr Beygingarlýsingu íslensk nútímamáls eftir Stofnun Árna Magnússonar í íslenskum fræðum.</li>
             </ul>
           </p>
         </div>
