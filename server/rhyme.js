@@ -175,14 +175,14 @@ const findRhyme = (sql, parameter, callback) => {
   /*
     Find rhyme
   */
-  console.time('Tók');
+  console.time('Skipun');
   connection.query(sql, [parameter], function(error, results, fields) {
     if (error) {
       console.error(error)
       callback(null)
       return
     }
-    console.timeEnd('Tók');
+    console.timeEnd('Skipun');
     
     if (results[2].length == 0) {
       console.log('~~ No results')

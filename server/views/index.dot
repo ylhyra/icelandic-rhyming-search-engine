@@ -94,10 +94,10 @@
   {
     "@context": "http://schema.org",
     "@type": "WebSite",
-    "url": "http://{{=it.url}}/",
+    "url": "https://rimordabok.is/",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "http://{{=it.url}}/?q={search_term_string}",
+      "target": "https://rimordabok.is/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
