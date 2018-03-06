@@ -18,7 +18,7 @@ http://islenska.org/rima/
   kotungi - almúgi - héraði - Alþingi      Áherslurím
   hryssan - kyss'ann
   Búðardal - brúðaval
-  Sigöldu - mig völdu
+  Sigöldu - mig völdu 
   lands - manns - stans
   hringt - sýnt - týnt
   hringt - hreint - beint
@@ -63,9 +63,9 @@ const fs = require('fs')
 const path = require('path')
 const LZUTF8 = require('lzutf8')
 
-fs.existsSync(path.join(__dirname, '/../cache/')) || fs.mkdirSync(path.join(__dirname, '/../cache/')) 
+fs.existsSync(path.join(__dirname, '/../cache/')) || fs.mkdirSync(path.join(__dirname, '/../cache/'))
 const cache = require('lru-cache')({
-  max: 100,
+  max: 1000,
   //length: function(n, key) { return n * 2 + key.length },
   dispose: (key, n) => {
     fs.unlink(path.join(__dirname, '/../cache/' + key))
@@ -87,31 +87,42 @@ const rhyme = (input, callback) => {
   const cache_id = word_split.slice(-6).join('')
 
   if (cache.get(cache_id)) {
-    fs.readFile(path.join(__dirname, '/../cache/' + cache_id), 
+    try {
+      getFromCache(cache_id, callback)
+    } catch (e) {
+      getFromDatabase(cache_id, word, last_syllables, last_syllable, callback)
+    }
+  } else {
+    getFromDatabase(cache_id, word, last_syllables, last_syllable, callback)
+  }
+}
+
+const getFromCache = (cache_id, callback) => {
+  fs.readFile(path.join(__dirname, '/../cache/' + cache_id),
     // "utf8",
     (err, data) => {
       // console.timeEnd('hhe');
       if (err) {
         throw err;
       }
-      callback(JSON.parse(LZUTF8.decompress(data, /*{ inputEncoding: 'Base64' }*/)))
+      callback(JSON.parse(LZUTF8.decompress(data, /*{ inputEncoding: 'Base64' }*/ )))
     })
-  } else {
-    findSQL(word, last_syllables, last_syllable, (output) => {
-      callback(output)
-      fs.writeFile(
-        path.join(__dirname, '/../cache/' + cache_id),
-        LZUTF8.compress(JSON.stringify(output), /*{ outputEncoding: 'Base64' }*/),
-        (err, data) => {
-          if (err) {
-            throw err;
-          }
-          cache.set(cache_id, 1)
-        })
-    })
-  }
 }
 
+const getFromDatabase = (cache_id, word, last_syllables, last_syllable, callback) => {
+  findSQL(word, last_syllables, last_syllable, (output) => {
+    callback(output)
+    fs.writeFile(
+      path.join(__dirname, '/../cache/' + cache_id),
+      LZUTF8.compress(JSON.stringify(output), /*{ outputEncoding: 'Base64' }*/ ),
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        cache.set(cache_id, 1)
+      })
+  })
+}
 
 
 const findSQL = (word, last_syllables, last_syllable, callback) => {
@@ -155,7 +166,7 @@ const findSQL = (word, last_syllables, last_syllable, callback) => {
       callback(null)
       return
     }
-
+ 
     findRhyme(sql, parameter, callback)
   })
 }
@@ -172,8 +183,8 @@ const findRhyme = (sql, parameter, callback) => {
       return
     }
     console.timeEnd('Tók');
-
-    if (results.length == 0) {
+    
+    if (results[2].length == 0) {
       console.log('~~ No results')
       callback(null)
       return
@@ -191,7 +202,7 @@ const findRhyme = (sql, parameter, callback) => {
     /*
       Finna góða liti og stærðir, byggist á Score og Popularity
     */
-    results = results.map(item => {
+    results = results[2].map(item => {
       let opacity = (minMax(item.score, 100, 190) / 190) ** 1.6 + 0.1
       opacity = minMax(opacity, 0.45, 1)
       if (!item.popularity) {

@@ -8,8 +8,8 @@ scp -r rhyme.sql.bz2 root@ssh.egill.xyz:/home/egill/rhyme/rhyme.sql.bz2
 # Install Package.json
 scp package.json root@ssh.egill.xyz:/home/egill/rhyme/package.json
 
-ssh root@ssh.egill.xyz rm -r /home/egill/rhyme/server/*
-scp -r server/* root@ssh.egill.xyz:/home/egill/rhyme/server
+ssh root@ssh.egill.xyz rm -r /home/egill/rhyme/server
+scp -r server root@ssh.egill.xyz:/home/egill/rhyme/
 ssh -t root@ssh.egill.xyz "cd /home/egill/rhyme/server/ && npm i"
 ssh root@ssh.egill.xyz pm2 restart rhyme
 
