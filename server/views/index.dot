@@ -16,24 +16,74 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="shortcut icon" href="/~/favicon.png">
+
+{{? it.results}}
+  <script type="text/javascript">
+    if(/[?&]q=/.test(location.search)) {
+      var match = location.search.match(/[?&]q=([A-zÀ-ÿ%0-9]+)/);
+      if (match && window.history.replaceState) {
+         window.history.replaceState(null, null, '/'+match[1]);
+        
+      }
+    }
+  </script>
+{{?}}
+
 <body>
 <div id="content">
   <a href="/um">Um</a>
   <h1><a href="/">Rímorðabók</a></h1>
-  <form method="get" action="/">
-    <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.string||''}}" spellcheck="false" autocomplete="off"/>
-  </form>
+  {{?!it.about}}
+    <form method="get" action="/">
+      <input name="q" id="s" placeholder="Leita að rími" type="search" value="{{=it.string||''}}" spellcheck="false" autocomplete="off"/>
+    </form>
+  {{?}}
 
   <main>
     <div id="results">
+    
       {{?it.no_results}}
         Ekkert rím fannst fyrir „<b>{{=it.string}}</b>“.
       {{?}}
+      
       {{?it.results}}
-        {{#def.load('/views/results.dot')}}
+        {{~it.results :syllables }}
+          <div class="syllables">
+            <div class="syllable">
+              {{=syllables.syllables}}
+            </div>
+            <div class="rhymes">
+              {{~syllables.rhymes :rhyme }}
+                <div class="rhyme">
+                  {{~rhyme.words :word:index }}
+                    <span style="{{=word.style}}">{{=word.word}}</span>{{? index < rhyme.words.length - 1 }}<span class="punc">,</span>{{?}}
+                  {{~}}
+                </div>
+              {{~}}
+            </div>
+          </div>
+        {{~}}
       {{?}}
+      
       {{?it.about}}
-        {{#def.load('/views/about.dot')}}
+        <div id="um">
+          <p>
+            Rímorðabókin er úr smiðju <a href="https://ylhyra.is">Ylhýru</a>.
+          </p>
+          <p>
+            Rímleitarvélin reynir sitt besta að finna heilrím, hálfrím, og næstum-því-rím.
+          </p>
+          <p>
+            Kíktu á verkefnið á <a href="https://github.com/egilll/rhyme">GitHub</a> eða <a href="mailto:egill@ylhyra.is">sendu okkur skilaboð</a> til að leggja til breytingar.
+          </p>
+          <p>
+            Byggir á:
+            <ul>
+              <li><a href="http://malfong.is/?pg=framburdur">Framburðarorðabók</a> Hjal-verkefnisins, ásamt ýmsum leiðréttingum.</li>
+              <li><a href="http://bin.arnastofnun.is/gogn/">Orðmyndalista</a> úr Beygingarlýsingu íslensk nútímamáls eftir Stofnun Árna Magnússonar í íslenskum fræðum. Ritstjóri BÍN er Kristín Bjarnadóttir.</li>
+            </ul>
+          </p>
+        </div>
       {{?}}
     </div>
   </main>
@@ -53,6 +103,7 @@
   }
   </script>
 {{?}}
+
 
 </body>
 </html>

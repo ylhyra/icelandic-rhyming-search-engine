@@ -8,3 +8,5 @@ npm-debug.log
 *.csv
 *.zip
 *.bz2
+cache/*
+log/*

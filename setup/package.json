@@ -1,0 +1,26 @@
+{
+  "name": "rhyme",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "browser-sync": "latest",
+    "gulp": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-babel": "latest",
+    "gulp-concat": "latest",
+    "gulp-filter": "^4.0.0",
+    "gulp-notify": "latest",
+    "gulp-plumber": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-stylus": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "html": "^1.0.0",
+    "js-beautify": "^1.6.8",
+    "line-by-line": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  }
+}

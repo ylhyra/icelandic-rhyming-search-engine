@@ -13,17 +13,8 @@ doT.setGlobals({
     return fs.readFileSync(path.join(path.dirname(process.argv[1]), file));
   }
 });
-// var logDirectory = path.join(__dirname, 'log')
-// fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
-// var accessLogStream = FileStreamRotator.getStream({
-//     date_format: 'YYYYMMDD',
-//     filename: path.join(logDirectory, 'access-%DATE%.log'),
-//     frequency: 'daily',
-//     verbose: false
-//   })
-// app.use(morgan('combined', {
-//   stream: accessLogStream
-// })) 
+
+
 app.enable('strict routing')
 app.use(compression({}))
 app.engine('dot', doT.__express)
@@ -33,14 +24,31 @@ app.use('/robots.txt', express.static(path.join(__dirname, './../public/robots.t
 app.use('/~', express.static(path.join(__dirname, './../public')))
 app.use('/style.css', express.static(path.join(__dirname, './../public/styles/style.css')))
 
-app.get('/um', function(req, res) {
-  res.render('about', {
-    layout: false, 
+
+var logDirectory = path.join(__dirname, '/../log')
+var accessLogStream = FileStreamRotator.getStream({
+  date_format: 'YYYYMMDD',
+  filename: path.join(logDirectory, 'access-%DATE%.log'),
+  frequency: 'daily',
+  verbose: false
+})
+app.use(morgan('combined', {
+  stream: accessLogStream
+}))
+
+app.get('/um', (req, res) => {
+  res.render('index', {
+    layout: false,
     about: true,
   })
 })
 
-app.get(['/', '/:string'], function(req, res) {
+app.get(['/', '/:string'], (req, res) => {
+  // if(req.query['q']) {
+  //   res.redirect('/'+req.query['q'])
+  //   return
+  // }
+  
   let string = req.query['q'] || req.params.string
   if (string && string.trim().length > 0) {
     string = (req.query['q'] || req.params.string).replace(/[^A-zÀ-ÿ ]/g, '').slice(-200)
